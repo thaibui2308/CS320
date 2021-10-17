@@ -14,21 +14,7 @@ void print_matrix(int *matrix, int row, int col) {
 	}
 }
 
-void mult_matrices(int *A, int *B, int *C, int m, int n, int p) {
-	int **mA, **mB, **mC, i, j, k; 
-	mA = (int**)(A);
-	mB = (int**)(B);
-	mC = (int**)(C);
-
-	for(i=0; i < m; i++)
-    	for(j=0; j < p; j++) {
-        	*(*(mC + i) + j) = 0;
-        	for(k=0; k < n; k++)
-            	*(*(mC + i) + j) += ( *(*(mA+i)+k) ) * ( *(*(mB+k)+j) );
-        	}	
-}
-
-void read_matrices(int**A, int**B, int**C, int *m, int *n, int *p, char *filename) {
+void read_matrices(int**A, int**B,int**C, int*m,int*n,int*p, char *filename) {
 	int *arr;
 	int c, i, j;
 	int tracker = 0;
@@ -51,13 +37,7 @@ void read_matrices(int**A, int**B, int**C, int *m, int *n, int *p, char *filenam
 		fclose(file);
     }
 	
-	C = (int**)realloc(C, (*m)*(*p)*sizeof(int));
-	for (i=0; i < *m; i++) {
-		*(C+i) = (int*)malloc(sizeof(int)*(*p));
-	}
-
-    A = (int**)realloc(A, (*m)*sizeof(int*));
-    tracker = 0;
+        tracker = 0;
     for (i = 0; i < *m; i++) {
         *(A+i) = (int*)malloc(sizeof(int)*(*n));
         for (j = 0; j < *n; j++) {
@@ -66,18 +46,32 @@ void read_matrices(int**A, int**B, int**C, int *m, int *n, int *p, char *filenam
       
         } 
     }
-	B = (int**)realloc(B, (*n)*sizeof(int*));
-    for (i = 0; i < *n; i++) {
-		*(B+i) = (int*)malloc(sizeof(int)*(*p));
+	    for (i = 0; i < *n; i++) {
+		*(B+i) = (int*)calloc((*p),sizeof(int));
         for (j = 0; j < *p; j++) {
             *(*(B + i) + j) = *(arr+tracker);
-	    tracker++;
+          	    tracker++;
         } 
-    }
+	    }
+    for (i=0; i < *m; i++) {
+		*(C+i) = (int*)malloc(sizeof(int)*(*p));
+	}
 }
+void mult_matrices(int *A, int *B, int *C, int m, int n, int p) {
+	int **mA, **mB, **mC, i, j, k; 
+	mA = (int**)(A);
+	mB = (int**)(B);
+	mC = (int**)(C);
 
+	for(i=0; i < m; i++)
+    	for(j=0; j < p; j++) {
+        	*(*(mC + i) + j) = 0;
+        	for(k=0; k < n; k++)
+            	*(*(mC + i) + j) += ( *(*(mA+i)+k) ) * ( *(*(mB+k)+j) );
+        	}	
+}
 int main(int argc, char **argv){
-	char *filename;
+    char *filename;
 	if (argc == 0) {
 		filename = "sample.txt";
 	} else {
@@ -86,9 +80,9 @@ int main(int argc, char **argv){
 
     int m, n, p;
     int *A, *B, *C;
-    A = (int *)(int**)malloc(sizeof(int*));
-    B = (int *)(int**)malloc(sizeof(int*));
-	C = (int*)(int**)malloc(sizeof(int*));
+    A = (int *)(int**)malloc(sizeof(int*)*(100));
+    B = (int *)(int**)malloc(sizeof(int*)*(100));
+    C = (int *)(int**)malloc(sizeof(int*)*(100));
     read_matrices((int**) A, (int**) B, (int**) C,&m, &n, &p, filename);
 	mult_matrices(A, B, C, m, n, p);
 
