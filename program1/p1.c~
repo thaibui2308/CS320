@@ -23,7 +23,7 @@ int main(void)
 {
    stack s = NULL;
    el_t e;
-   char sequence[12] = "345+*2-36*+";
+   char sequence[12] = "598+46**7*+";
    char *addrPtr;
    /* This pointer keeps the address of the first character of the given sequence */
    addrPtr = sequence;
