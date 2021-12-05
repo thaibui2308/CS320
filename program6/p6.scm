@@ -1,4 +1,4 @@
-;#lang scheme
+#lang scheme
 ; p6.scm
 ; A prototype for program 6 in scheme
 ;
@@ -62,8 +62,9 @@
 (define (penultimate lst)
   (cond
     ((not (list? lst)) "USAGE: (penultimate {list})")
+    ((null? (cdr lst)) '())
     ((null? lst) '())
-    ((null? (cddr lst)) (car lst))
+    ((null? (cddr lst)) (list (car lst)))
     (else (penultimate (cdr lst)))))
 ; (define (palindrome ...
 ; return #t if the list is palindrome
